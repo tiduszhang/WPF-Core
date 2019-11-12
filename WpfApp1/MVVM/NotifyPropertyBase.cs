@@ -36,7 +36,7 @@ namespace WpfApp1.MVVM
         /// <summary>
         /// 构造函数
         /// </summary>
-        protected NotifyPropertyBase()
+        public NotifyPropertyBase()
         {
         }
 

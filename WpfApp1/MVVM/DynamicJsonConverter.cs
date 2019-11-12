@@ -151,19 +151,109 @@ namespace WpfApp1.MVVM
                             }
                             if (!_ValueDictionary.ContainsKey(propertyName))
                             {
-                                object value = Read(ref reader, typeof(object), options);
-                                _ValueDictionary.Add(propertyName, value);
+                                JsonDocument jsonDocument = JsonDocument.ParseValue(ref reader);
+                                var array = jsonDocument.RootElement.EnumerateArray();
+                                var values = array.ToArray();
+
+                                //todo:递归生成动态属性类型（列表和数组）
+
+                                IList lstObject = new List<object>();
+                                //for (int i = 0; i < values.Length; i++)
+                                //{
+                                //    if (values[i].ValueKind == JsonValueKind.Number || values[i].ValueKind == JsonValueKind.String)
+                                //    {
+                                //        lstObject.Add(values[i].GetRawText());
+                                //    }
+                                //    else if (values[i].ValueKind == JsonValueKind.Array)
+                                //    {
+                                //        var valueObject = values[i].EnumerateArray();
+                                //        var valueObjectArrary = valueObject.ToArray();
+                                //        foreach (var valueObjectInfo in valueObjectArrary)
+                                //        { 
+                                //            //valueObjectInfo.Name
+                                //        }
+                                //    }
+                                //    else if (values[i].ValueKind == JsonValueKind.Object)
+                                //    {
+                                //        var valueObject = values[i].EnumerateObject();
+                                //        var valueObjectArrary = valueObject.ToArray();
+                                //        foreach (var valueObjectInfo in valueObjectArrary)
+                                //        {
+                                //            valueObjectInfo.Value.EnumerateArray
+                                //            //valueObjectInfo.Name
+                                //        }
+                                //    }
+                                //}
+
+                                _ValueDictionary.Add(propertyName, lstObject);
                                 _ValueDictionaryField.SetValue(obj, _ValueDictionary);
+
+                                ////动态类型的列表或数组值
+                                //reader.Read();
+                                //if (reader.TokenType == JsonTokenType.StartObject)
+                                //{
+                                //    //复杂类型  
+                                //    IList lstObject = new List<NotifyPropertyBase>();
+                                //    do
+                                //    {
+                                //        if (reader.TokenType == JsonTokenType.EndArray)
+                                //        {
+                                //            break;
+                                //        }
+                                //        var vObj = Read(ref reader, typeof(NotifyPropertyBase), options);
+                                //        lstObject.Add(vObj);
+                                //    } while (reader.Read());
+                                //    //var value = Array.CreateInstance(propertyInfo.PropertyType.GetGenericArguments()[0], lstObject.Count);
+                                //    //propertyInfo.SetValue(obj, lstObject);
+
+                                //    //object value = Read(ref reader, typeof(object), options);
+                                //    _ValueDictionary.Add(propertyName, lstObject);
+                                //    _ValueDictionaryField.SetValue(obj, _ValueDictionary);
+                                //}
+                                //else
+                                //{
+                                //    //复杂类型  
+                                //    IList lstObject = new List<Object>();
+                                //    do
+                                //    {
+                                //        if (reader.TokenType == JsonTokenType.EndArray)
+                                //        {
+                                //            break;
+                                //        }
+                                //        var vObj = reader.GetString();
+                                //        lstObject.Add(vObj);
+                                //    } while (reader.Read());
+                                //    //var value = Array.CreateInstance(propertyInfo.PropertyType.GetGenericArguments()[0], lstObject.Count);
+                                //    //propertyInfo.SetValue(obj, lstObject);
+
+                                //    //object value = Read(ref reader, typeof(object), options);
+                                //    _ValueDictionary.Add(propertyName, lstObject);
+                                //    _ValueDictionaryField.SetValue(obj, _ValueDictionary);
+                                //}
                             }
                         }
                     }
                     else if (reader.TokenType == JsonTokenType.StartObject)
-                    { 
+                    {
                         var propertyInfo = typeToConvert.GetProperty(propertyName);
                         if (propertyInfo != null)
                         {
                             var vObj = Read(ref reader, propertyInfo.PropertyType, options);
                             propertyInfo.SetValue(obj, vObj);
+                        }
+                        else if (_ValueDictionaryField != null)
+                        {
+                            IDictionary<string, object> _ValueDictionary = _ValueDictionaryField.GetValue(obj) as IDictionary<string, object>;
+                            if (_ValueDictionary == null)
+                            {
+                                _ValueDictionary = new Dictionary<string, object>();
+                            }
+                            if (!_ValueDictionary.ContainsKey(propertyName))
+                            {
+                                object value = Read(ref reader, typeof(NotifyPropertyBase), options);
+                                _ValueDictionary.Add(propertyName, value);
+                                _ValueDictionaryField.SetValue(obj, _ValueDictionary);
+                            }
                         }
                     }
                 }

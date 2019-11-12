@@ -46,28 +46,17 @@ namespace WpfApp1
             }
         }
 
-        public List<TestModel> TestModels
-        {
-            get
-            {
-                return this.GetValue<List<TestModel>>();
-            }
-            set
-            {
-                this.SetValue(value);
-            }
-        }
-
-        public TestModel TestModel1
-        {
-            get
-            {
-                return this.GetValue<TestModel>();
-            }
-            set
-            {
-                this.SetValue(value);
-            }
-        }
+        //public List<TestModel> TestModels
+        //{
+        //    get
+        //    {
+        //        return this.GetValue<List<TestModel>>();
+        //    }
+        //    set
+        //    {
+        //        this.SetValue(value);
+        //    }
+        //}
+         
     }
 }
