@@ -8,7 +8,7 @@
         d:DataContext="{d:DesignInstance Type=local:TestViewModel}"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TextBox Text="{Binding ViewModel.ErrorMessage, Mode=TwoWay}"  VerticalAlignment="Top"/> 
+        <TextBox Text="{Binding ViewModel.DateTime, Mode=TwoWay}"  VerticalAlignment="Top"/> 
         <Button Content="Right Button" Command="{Binding ButtonCommand}" VerticalAlignment="Bottom" HorizontalAlignment="Right"/>
     </Grid>
 </Window>

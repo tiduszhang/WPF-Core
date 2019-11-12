@@ -20,11 +20,11 @@ namespace WpfApp1
         public TestViewModel()
         {
             ViewModel = new TestModel();
+            ViewModel.DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
 
             ViewModel.TestModels = new List<TestModel>();
             ViewModel.TestModels.Add(new TestModel());
             ViewModel.TestModels.Add(new TestModel());
-
             ViewModel.TestModel1 = new TestModel();
         }
 
@@ -40,8 +40,8 @@ namespace WpfApp1
                     ViewModel.ErrorMessage = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                     string viewModelTest = System.Text.Json.JsonSerializer.Serialize(ViewModel, new System.Text.Json.JsonSerializerOptions() { Converters = { new DynamicJsonConverter() } });
                     dynamic notifyBaseModel = System.Text.Json.JsonSerializer.Deserialize<TestModel>(viewModelTest, new System.Text.Json.JsonSerializerOptions() { Converters = { new DynamicJsonConverter() } });
-
-                    ViewModel.ErrorMessage = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
+                     
+                    ViewModel.DateTime = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
                 });
             }
         }
