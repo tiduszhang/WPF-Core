@@ -1,4 +1,4 @@
 # WPF-Core
 WPF Core
 
-dynamic类型属性绑定
+MVVM模式 dynamic类型属性绑定
